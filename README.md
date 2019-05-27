@@ -1,0 +1,2 @@
+# DynamicMathSymbols_2.0
+While developing some educational video games for a hobby the problem was encountered that LaTEX only worked for the first problem, and reloading the page every time seemed as if it would cause problems with tracking the game statistics and jumps in the animations. So this project was begun, it draws the mathematical notation to an HTML canvas element in a way that can readily be applied in JavaScript code that generates random math problems on the fly.
