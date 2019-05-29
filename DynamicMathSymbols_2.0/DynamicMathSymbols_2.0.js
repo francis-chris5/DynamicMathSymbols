@@ -80,7 +80,39 @@ function BinarySymbol(x, y, size, setting, pre, post, color){
 		this.post.setting = this.setting;
 		this.post.color = this.color;
 	}//end setPlace()
-}
+	
+	this.setUV = function(){
+		this.u = this.post.u;							//override default u value
+		if(this.pre.v > this.post.v){					//override default v value
+			this.v = this.pre.v;
+		}
+		else{
+			this.v = this.post.v;
+		}
+	}//end setUV()
+	
+	this.setM = function(){								//align both parts to a common midpoint
+		if(this.pre.m > this.post.m){
+			this.m = this.pre.m;
+			this.post.y = this.post.y + (this.pre.m - this.post.m);
+			this.y1 = this.y + (this.pre.m - this.ver / 2);
+			this.pre.clear();
+			this.post.clear();
+			this.pre.image();
+			this.post.image();
+		}
+		else{
+			this.m = this.post.m;
+			this.pre.y = this.pre.y + (this.post.m - this.pre.m);
+			this.y1 = this.y + (this.post.m - this.ver / 2);
+			this.pre.clear();
+			this.post.clear();
+			this.pre.image();
+			this.post.image();
+		}
+	}//end setM()
+	
+}//end BinarySymbol
 
 
 
@@ -1152,9 +1184,6 @@ function Superscript(x, y, size, setting, base, script, color){
 
 
 
-		/////////////////////////////////////////////////////////////////////////////////////////
-		///////////////// ADDRESSED INLINE READABLE WHITE SPACE UP TO HERE //////////////////////
-		/////////////////////////////////////////////////////////////////////////////////////////
 
 		
 		
@@ -1167,49 +1196,26 @@ function Superscript(x, y, size, setting, base, script, color){
 function Addition(x, y, size, setting, pre, post, color){
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("+",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("+", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;					//override default u value
-		if(this.pre.v>this.post.v){			//override default v value
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Addition
 
@@ -1224,49 +1230,26 @@ function Addition(x, y, size, setting, pre, post, color){
 function Subtraction(x, y, size, setting, pre, post, color){
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("-",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("-", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Subtraction
 
@@ -1280,202 +1263,202 @@ function Subtraction(x, y, size, setting, pre, post, color){
 
 function Multiplication(x, y, size, setting, factor1, factor2, type, color){
 	Symbol.call(this, x, y, size, setting, color);
-	this.factor1=factor1;
-	this.factor2=factor2;
-	this.type=type;	//1 is cross symbol, 2 is dot symbol, 3 is parenthesis, 4 is juxtaposition
+	this.factor1 = factor1;
+	this.factor2 = factor2;
+	this.type = type;	//1 is cross symbol, 2 is dot symbol, 3 is parenthesis, 4 is juxtaposition
 	
-	this.setPlace=function(){
-		this.factor1.x=this.x;
-		this.factor1.y=this.y;
-		this.factor1.size=this.size;
-		this.factor1.setting=this.setting;
-		this.factor1.color=this.color;
-		this.factor2.y=this.y;
-		this.factor2.size=this.size;
-		this.factor2.setting=this.setting;
-		this.factor2.color=this.color;
+	this.setPlace = function(){
+		this.factor1.x = this.x;
+		this.factor1.y = this.y;
+		this.factor1.size = this.size;
+		this.factor1.setting = this.setting;
+		this.factor1.color = this.color;
+		this.factor2.y = this.y;
+		this.factor2.size = this.size;
+		this.factor2.setting = this.setting;
+		this.factor2.color = this.color;
 	}//end setPlace()
 
-	this.image=function(){
-		if(this.type==1){
+	this.image = function(){
+		if(this.type == 1){
 			this.setPlace();
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
 			this.factor1.image();
-			this.factor2.x=this.factor1.u+1.4*this.hor;
+			this.factor2.x = this.factor1.u + 1.4 * this.hor;
 			this.factor2.image()
-			if(this.factor1.m>this.factor2.m){
-				this.m=this.factor1.m;
-				this.factor2.y=this.factor2.y+(this.factor1.m-this.factor2.m);
-				this.y1=this.y+(this.factor1.m-this.ver/2);
+			if(this.factor1.m > this.factor2.m){
+				this.m = this.factor1.m;
+				this.factor2.y = this.factor2.y + (this.factor1.m - this.factor2.m);
+				this.y1 = this.y + (this.factor1.m - this.ver/2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			else{
-				this.m=this.factor2.m;
-				this.factor1.y=this.factor1.y+(this.factor2.m-this.factor1.m);
-				this.y1=this.y+(this.factor2.m-this.ver/2);
+				this.m = this.factor2.m;
+				this.factor1.y = this.factor1.y + (this.factor2.m - this.factor1.m);
+				this.y1 = this.y + (this.factor2.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			sketch.beginPath();
-			sketch.moveTo(this.factor1.u,this.y1+this.ver/3)
-			sketch.lineTo(this.factor1.u+this.hor,this.y1+this.ver);
-			sketch.moveTo(this.factor1.u,this.y1+this.ver);
-			sketch.lineTo(this.factor1.u+this.hor,this.y1+this.ver/3);
-			sketch.strokeStyle=this.color;
+			sketch.moveTo(this.factor1.u, this.y1 + this.ver / 3);
+			sketch.lineTo(this.factor1.u + this.hor, this.y1 + this.ver);
+			sketch.moveTo(this.factor1.u, this.y1 + this.ver);
+			sketch.lineTo(this.factor1.u + this.hor, this.y1 + this.ver / 3);
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
-			this.u=this.factor2.u;
-			if(this.factor1.v>this.factor2.v){
-				this.v=this.factor1.v;
+			this.u = this.factor2.u;
+			if(this.factor1.v > this.factor2.v){
+				this.v = this.factor1.v;
 			}
 			else{
-				this.v=this.factor2.v;
+				this.v = this.factor2.v;
 			}
 		}//end type 1
 		else if(this.type == 2){
-			let counter=0;
+			let counter = 0;
 			this.setPlace();
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
 			this.factor1.image();
-			this.factor2.x=this.factor1.u+1.3*this.hor;
+			this.factor2.x = this.factor1.u + 1.3 * this.hor;
 			this.factor2.image();
-			if(this.factor1.m>this.factor2.m){
-				this.m=this.factor1.m;
-				this.factor2.y=this.factor2.y+(this.factor1.m-this.factor2.m);
-				this.y1=this.y+(this.factor1.m-this.ver/2);
+			if(this.factor1.m > this.factor2.m){
+				this.m = this.factor1.m;
+				this.factor2.y = this.factor2.y + (this.factor1.m - this.factor2.m);
+				this.y1 = this.y + (this.factor1.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			else{
-				this.m=this.factor2.m;
-				this.factor1.y=this.factor1.y+(this.factor2.m-this.factor1.m);
-				this.y1=this.y+(this.factor2.m-this.ver/2);
+				this.m = this.factor2.m;
+				this.factor1.y = this.factor1.y + (this.factor2.m - this.factor1.m);
+				this.y1 = this.y + (this.factor2.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			sketch.beginPath();
-			while(counter<=this.hor/4){
-				sketch.arc(this.factor1.u+this.hor/2,this.y1+2*this.ver/3,counter,0,6.29);
-				counter=counter+0.3;
+			while(counter <= this.hor / 4){
+				sketch.arc(this.factor1.u + this.hor / 2, this.y1 + 2 * this.ver / 3, counter, 0, 6.29);
+				counter += 0.3;
 			}
-			sketch.strokeStyle=this.color;
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
-			this.u=this.factor2.u;
-			if(this.factor1.v>this.factor2.v){
-				this.v=this.factor1.v;
+			this.u = this.factor2.u;
+			if(this.factor1.v > this.factor2.v){
+				this.v = this.factor1.v;
 			}
 			else{
-				this.v=this.factor2.v;
+				this.v = this.factor2.v;
 			}
 		}//end type 2
 		else if(this.type == 3){
 			this.setPlace();
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
-			this.factor1.x=this.x+0.8*this.hor;
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
+			this.factor1.x = this.x + 0.8 * this.hor;
 			this.factor1.image();
-			this.factor2.x=this.factor1.u+1.8*this.hor;
+			this.factor2.x = this.factor1.u + 1.8 * this.hor;
 			this.factor2.image();
-			if(this.factor1.m>this.factor2.m){
-				this.m=this.factor1.m;
-				this.factor2.y=this.factor2.y+(this.factor1.m-this.factor2.m);
-				this.y1=this.y+(this.factor1.m-this.ver/2);
+			if(this.factor1.m > this.factor2.m){
+				this.m = this.factor1.m;
+				this.factor2.y = this.factor2.y + (this.factor1.m - this.factor2.m);
+				this.y1 = this.y + (this.factor1.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			else{
-				this.m=this.factor2.m;
-				this.factor1.y=this.factor1.y+(this.factor2.m-this.factor1.m);
-				this.y1=this.y+(this.factor2.m-this.ver/2);
+				this.m = this.factor2.m;
+				this.factor1.y = this.factor1.y + (this.factor2.m - this.factor1.m);
+				this.y1 = this.y + (this.factor2.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			sketch.beginPath();
-			sketch.font=this.font1;
-			sketch.fillStyle=this.color;
-			sketch.fillText("(",this.x,this.y1+this.ver)
-			sketch.fillText(")",this.factor1.u,this.y1+this.ver);
-			sketch.fillText("(",this.factor1.u+this.hor,this.y1+this.ver);
-			sketch.fillText(")",this.factor2.u,this.y1+this.ver);
-			sketch.strokeStyle=this.color;
+			sketch.font = this.font1;
+			sketch.fillStyle = this.color;
+			sketch.fillText("(", this.x, this.y1 + this.ver)
+			sketch.fillText(")", this.factor1.u, this.y1 + this.ver);
+			sketch.fillText("(", this.factor1.u + this.hor, this.y1 + this.ver);
+			sketch.fillText(")", this.factor2.u, this.y1 + this.ver);
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
-			this.u=this.factor2.u+0.8*this.hor;
-			if(this.factor1.v>this.factor2.v){
-				this.v=this.factor1.v+this.ver/4;
+			this.u = this.factor2.u + 0.8 * this.hor;
+			if(this.factor1.v > this.factor2.v){
+				this.v = this.factor1.v + this.ver / 4;
 			}
 			else{
-				this.v=this.factor2.v+this.ver/4;
+				this.v = this.factor2.v + this.ver / 4;
 			}
 		}//end type 3
 		else{
 			this.setPlace();
-			this.size=size;
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
+			this.size = size;
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
 			factor1.image();
-			factor2.x=this.factor1.u;
+			factor2.x = this.factor1.u;
 			factor2.image();
-			if(this.factor1.m>this.factor2.m){
-				this.m=this.factor1.m;
-				this.factor2.y=this.factor2.y+(this.factor1.m-this.factor2.m);
-				this.y1=this.y+(this.factor1.m-this.ver/2);
+			if(this.factor1.m > this.factor2.m){
+				this.m = this.factor1.m;
+				this.factor2.y = this.factor2.y + (this.factor1.m - this.factor2.m);
+				this.y1 = this.y + (this.factor1.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
 			else{
-				this.m=this.factor2.m;
-				this.factor1.y=this.factor1.y+(this.factor2.m-this.factor1.m);
-				this.y1=this.y+(this.factor2.m-this.ver/2);
+				this.m = this.factor2.m;
+				this.factor1.y = this.factor1.y + (this.factor2.m - this.factor1.m);
+				this.y1 = this.y + (this.factor2.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
 				this.factor2.image();
 			}
-			this.u=this.factor2.u;
-			if(this.factor1.v>this.factor2.v){
-				this.v=this.factor1.v;
+			this.u = this.factor2.u;
+			if(this.factor1.v > this.factor2.v){
+				this.v = this.factor1.v;
 			}
 			else{
-				this.v=this.factor2.v;
+				this.v = this.factor2.v;
 			}
 		}//end type 4
 	}//end image()
@@ -1491,128 +1474,134 @@ function Multiplication(x, y, size, setting, factor1, factor2, type, color){
 
 function Division(x, y, size, setting, dividend, divisor, type, color){
 	Symbol.call(this, x, y, size, setting, color);
-	this.dividend=dividend;
-	this.divisor=divisor;
-	this.type=type;	//1 is linear symbol, 2 is divide symbol, 3 is Fraction
+	this.dividend = dividend;
+	this.divisor = divisor;
+	this.type = type;	//1 is linear symbol, 2 is divide symbol, 3 is Fraction
 	
-	this.setPlace=function(){
-		this.dividend.x=this.x;
-		this.dividend.y=this.y;
-		this.dividend.size=this.size;
-		this.dividend.setting=this.setting;
-		this.dividend.color=this.color;
-		this.divisor.x=this.x;
-		this.divisor.y=this.y;
-		this.divisor.size=this.size;
-		this.divisor.setting=this.setting;
-		this.divisor.color=this.color;
+	this.setPlace = function(){
+		this.dividend.x = this.x;
+		this.dividend.y = this.y;
+		this.dividend.size = this.size;
+		this.dividend.setting = this.setting;
+		this.dividend.color = this.color;
+		this.divisor.x = this.x;
+		this.divisor.y = this.y;
+		this.divisor.size = this.size;
+		this.divisor.setting = this.setting;
+		this.divisor.color = this.color;
 	}
 
-	this.image=function(){
+	this.image = function(){
 		if(this.type == 1){
-			let counter=0;
+			let counter = 0;
 			this.setPlace();
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
-			this.dividend.x=this.x;
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
+			this.dividend.x = this.x;
 			this.dividend.image();
-			this.divisor.x=this.dividend.u+2*this.hor;
+			this.divisor.x = this.dividend.u + 2 * this.hor;
 			this.divisor.image();
-			if(this.divisor.m>this.dividend.m){
-				this.m=this.divisor.m;
-				this.dividend.y=this.dividend.y+(this.divisor.m-this.dividend.m);
-				this.y1=this.y+(this.divisor.m-this.ver/2);
+			if(this.divisor.m > this.dividend.m){
+				this.m = this.divisor.m;
+				this.dividend.y = this.dividend.y + (this.divisor.m - this.dividend.m);
+				this.y1 = this.y + (this.divisor.m - this.ver / 2);
 				this.divisor.clear();
 				this.dividend.clear();
 				this.divisor.image();
 				this.dividend.image();
 			}
 			else{
-				this.m=this.dividend.m;
-				this.divisor.y=this.divisor.y+(this.dividend.m-this.divisor.m);
-				this.y1=this.y+(this.dividend.m-this.ver/2);
+				this.m = this.dividend.m;
+				this.divisor.y = this.divisor.y + (this.dividend.m - this.divisor.m);
+				this.y1 = this.y + (this.dividend.m - this.ver / 2);
 				this.divisor.clear();
 				this.dividend.clear();
 				this.divisor.image();
 				this.dividend.image();
 			}
 			sketch.beginPath();
-			sketch.moveTo(this.dividend.u,this.y1+this.ver/2)
-			sketch.lineTo(this.dividend.u+1.5*this.hor,this.y1+this.ver/2)
-			sketch.strokeStyle=this.color;
+			sketch.moveTo(this.dividend.u, this.y1 + this.ver / 2);
+			sketch.lineTo(this.dividend.u + 1.5 * this.hor, this.y1 + this.ver / 2);
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
 			sketch.beginPath();
-			counter=0;
-			while(counter<=this.hor/8){
-				sketch.arc(this.dividend.u+0.75*this.hor,this.y1+this.ver/4,counter,0,6.29);
-				counter=counter+1;
+			counter = 0;
+			while(counter <= this.hor / 8){
+				sketch.arc(this.dividend.u + 0.75 * this.hor, this.y1 + this.ver / 4, counter, 0, 6.29);
+				counter++;
 			}
-			sketch.strokeStyle=this.color;
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
 			sketch.beginPath();
-			counter=0;
-			while(counter<=this.hor/8){
-				sketch.arc(this.dividend.u+0.75*this.hor,this.y1+3*this.ver/4,counter,0,6.29);
-				counter=counter+1;
+			counter = 0;
+			while(counter <= this.hor / 8){
+				sketch.arc(this.dividend.u + 0.75 * this.hor, this.y1 + 3 * this.ver / 4, counter, 0, 6.29);
+				counter++;
 			}
-			sketch.strokeStyle=this.color;
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
-			this.u=this.dividend.u;
-			if(this.divisor.v>this.dividend.v){
-				this.v=this.divisor.v;
+			this.u = this.dividend.u;
+			if(this.divisor.v > this.dividend.v){
+				this.v = this.divisor.v;
 			}
 			else{
-				this.v=this.dividend.v;
+				this.v = this.dividend.v;
 			}
 		}//end type 1
 		else if(this.type == 2){
 			this.setPlace();
-			this.hor=this.size*0.75;
-			this.ver=this.size;
-			this.fontSize1=this.ver+"px";
-			this.fontFamily="Times New Roman";
-			this.font1=this.fontSize1+" "+this.fontFamily;
-			this.divisor.x=this.x;
+			this.hor = this.size * 0.75;
+			this.ver = this.size;
+			this.fontSize1 = this.ver + "px";
+			this.fontFamily = "Times New Roman";
+			this.font1 = this.fontSize1 + " " + this.fontFamily;
+			this.divisor.x = this.x;
 			this.divisor.image();
-			this.dividend.x=this.divisor.u+this.hor;
+			this.dividend.x = this.divisor.u + this.hor;
 			this.dividend.image();
-			let scene=document.getElementById(this.setting);
-			let sketch=scene.getContext("2d");
+			let scene = document.getElementById(this.setting);
+			let sketch = scene.getContext("2d");
 			sketch.beginPath();
-			sketch.arc(this.divisor.u-0.75*this.hor,this.y+this.ver/2,1.1*this.hor,5.6,0.8);
-			sketch.strokeStyle=this.color;
+			sketch.arc(this.divisor.u - 0.75*this.hor, this.y + this.ver / 2, 1.1 * this.hor, 5.6, 0.8);
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.beginPath();
-			sketch.moveTo(this.divisor.u+0.15*this.hor,this.y);
-			sketch.lineTo(this.dividend.u,this.y);
-			sketch.strokeStyle=this.color;
+			sketch.moveTo(this.divisor.u + 0.15 * this.hor, this.y);
+			sketch.lineTo(this.dividend.u, this.y);
+			sketch.strokeStyle = this.color;
 			sketch.stroke();
 			sketch.closePath();
-			this.u=this.dividend.u;
-			if(this.divisor.v>this.dividend.v){
-				this.v=this.divisor.v;
+			this.u = this.dividend.u;
+			if(this.divisor.v > this.dividend.v){
+				this.v = this.divisor.v;
 			}
 			else{
-				this.v=this.dividend.v;
+				this.v = this.dividend.v;
 			}
 		}//end type 2
 		else{
-			let divide=new Fraction(this.x,this.y,this.size,this.setting,this.dividend,this.divisor,this.color)
+			let divide = new Fraction(this.x, this.y, this.size, this.setting, this.dividend, this.divisor, this.color);
 			divide.image();
-			this.u=divide.u;
-			this.v=divide.v
-			this.m=divide.m;
+			this.u = divide.u;
+			this.v = divide.v
+			this.m = divide.m;
 		}//end type 3
 	}//end image()
 }//end Division
+
+
+
+
+
+
 
 
 
@@ -1629,49 +1618,26 @@ function Same(x, y, size, setting, pre, post, color){
 		//equal sign
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size*0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver+"px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("=",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("=", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Same
 
@@ -1686,49 +1652,26 @@ function Same(x, y, size, setting, pre, post, color){
 function Greater(x, y, size, setting, pre, post, color){
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText(">",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText(">", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Greater
 
@@ -1743,58 +1686,38 @@ function GreaterOrEqual(x, y, size, setting, pre, post, color){
 		//can probably modify this to be child of Greater and add line to image
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.ver/2);
-			this.y1=this.y+(this.pre.m-this.post.m);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText(">",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText(">", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
 			//the line under the greater symbol
 		sketch.beginPath();
-		sketch.moveTo(this.pre.u,this.y1+this.ver);
-		sketch.lineTo(this.pre.u+0.75*this.hor,this.y1+this.ver);
-		sketch.strokeStyle=this.color;
+		sketch.moveTo(this.pre.u, this.y1 + this.ver);
+		sketch.lineTo(this.pre.u + 0.75 * this.hor, this.y1 + this.ver);
+		sketch.strokeStyle = this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end GreaterOrEqual
+
+
+
 
 
 
@@ -1807,51 +1730,30 @@ function GreaterOrEqual(x, y, size, setting, pre, post, color){
 function Less(x, y, size, setting, pre, post, color){
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 	
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("<",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("<", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Less
+
+
 
 
 
@@ -1864,56 +1766,33 @@ function LessOrEqual(x, y, size, setting, pre, post, color){
 		//can probably make this a child of Less and just add line to image
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("<",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("<", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
 			//the line under the less than symbol
 		sketch.beginPath();
-		sketch.moveTo(this.pre.u+0.1*this.hor,this.y1+this.ver);
-		sketch.lineTo(this.pre.u+0.75*this.hor,this.y1+this.ver);
-		sketch.strokeStyle=this.color;
+		sketch.moveTo(this.pre.u + 0.1 * this.hor, this.y1 + this.ver);
+		sketch.lineTo(this.pre.u + 0.75 * this.hor, this.y1 + this.ver);
+		sketch.strokeStyle = this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end LessOrEqual
 
@@ -1929,56 +1808,33 @@ function NotSame(x, y, size, setting, pre, post, color){
 		//can probably make this a child of same and just add the slash
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size * 0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+this.hor;
+		this.post.x = this.pre.u + this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
-		sketch.font=this.font1;
-		sketch.fillStyle=this.color;
-		sketch.fillText("=",this.pre.u,this.y1+this.ver);
+		sketch.font = this.font1;
+		sketch.fillStyle = this.color;
+		sketch.fillText("=", this.pre.u, this.y1 + this.ver);
 		sketch.stroke();
 		sketch.closePath();
 			//the line through the equal sign
 		sketch.beginPath();
-		sketch.moveTo(this.pre.u+0.1*this.hor,this.y1+this.ver);
-		sketch.lineTo(this.pre.u+0.75*this.hor,this.y1+this.ver/3);
-		sketch.strokeStyle=this.color;
+		sketch.moveTo(this.pre.u + 0.1 * this.hor, this.y1 + this.ver);
+		sketch.lineTo(this.pre.u + 0.75 * this.hor, this.y1 + this.ver / 3);
+		sketch.strokeStyle = this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end NotSame
 
@@ -1994,67 +1850,49 @@ function ApproximatelySame(x, y, size, setting, pre, post, color){
 		//approximately equal sign
 	BinarySymbol.call(this, x, y, size, setting, pre, post, color);
 
-	this.image=function(){
+	this.image = function(){
 		this.setPlace();
-		this.hor=this.size*0.75;
-		this.ver=this.size;
-		this.fontSize1=this.ver+"px";
-		this.fontFamily="Times New Roman";
-		this.font1=this.fontSize1+" "+this.fontFamily;
-		let scene=document.getElementById(this.setting);
-		let sketch=scene.getContext("2d");
+		this.hor = this.size*0.75;
+		this.ver = this.size;
+		this.fontSize1 = this.ver + "px";
+		this.fontFamily = "Times New Roman";
+		this.font1 = this.fontSize1 + " " + this.fontFamily;
+		let scene = document.getElementById(this.setting);
+		let sketch = scene.getContext("2d");
 		this.pre.image();
-		this.post.x=this.pre.u+1.3*this.hor;
+		this.post.x = this.pre.u + 1.3 * this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 			//top front
 		sketch.beginPath();
-		sketch.arc(this.pre.u+0.2*this.hor,this.y1+15*this.ver/16,this.hor/2,4,5.2)
+		sketch.arc(this.pre.u + 0.2 * this.hor, this.y1 + 15 * this.ver / 16, this.hor / 2, 4, 5.2);
 		sketch.stroke();
 		sketch.closePath();
 			//bottom front
 		sketch.beginPath();
-		sketch.arc(this.pre.u+0.2*this.hor,this.y1+35*this.ver/32,this.hor/2,4,5.2)
+		sketch.arc(this.pre.u + 0.2 * this.hor, this.y1 + 35 * this.ver / 32, this.hor / 2, 4, 5.2);
 		sketch.stroke();
 		sketch.closePath();
 			//top back
 		sketch.beginPath();
-		sketch.arc(this.pre.u+0.2*this.hor+this.hor/2,this.y1+9*this.ver/32,this.hor/2,0.8,2.13)
+		sketch.arc(this.pre.u + 0.2 * this.hor + this.hor / 2, this.y1 + 9 * this.ver / 32, this.hor / 2, 0.8, 2.13);
 		sketch.stroke();
 		sketch.closePath();
 			//bottom back
 		sketch.beginPath();
-		sketch.arc(this.pre.u+0.2*this.hor+this.hor/2,this.y1+14*this.ver/32,this.hor/2,0.8,2.13)
+		sketch.arc(this.pre.u + 0.2 * this.hor + this.hor / 2, this.y1 + 14 * this.ver / 32, this.hor / 2, 0.8, 2.13);
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.ver){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end ApproximatelySame
 
 
+
+
+		/////////////////////////////////////////////////////////////////////////////////////////
+		///////////////// ADDRESSED INLINE READABLE WHITE SPACE UP TO HERE //////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2076,24 +1914,7 @@ function Equivalent(x, y, size, setting, pre, post, color){
 		this.pre.image();
 		this.post.x=this.pre.u+1.3*this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
 		sketch.moveTo(this.pre.u,this.y1+this.ver);
 		sketch.lineTo(this.pre.u+this.hor,this.y1+this.ver);
@@ -2104,13 +1925,7 @@ function Equivalent(x, y, size, setting, pre, post, color){
 		sketch.strokeStyle=this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Equivalent
 
@@ -2135,24 +1950,7 @@ function Congruent(x, y, size, setting, pre, post, color){
 		this.pre.image();
 		this.post.x=this.pre.u+2*this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
 		sketch.arc(this.pre.u+0.5*this.hor,this.y1+11*this.ver/16,this.hor/2,3.8,5.5)
 		sketch.stroke();
@@ -2169,13 +1967,7 @@ function Congruent(x, y, size, setting, pre, post, color){
 		sketch.strokeStyle=this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Congruent
 
@@ -2201,24 +1993,7 @@ function Proportional(x, y, size, setting, pre, post, color){
 		this.pre.image();
 		this.post.x=this.pre.u+1.5*this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
 		sketch.moveTo(this.pre.u+1.1*this.hor,this.y1+this.ver/2);
 		sketch.arc(this.pre.u+0.3*this.hor,this.y1+2*this.ver/3,this.hor/3,0.9,5.4);
@@ -2226,13 +2001,7 @@ function Proportional(x, y, size, setting, pre, post, color){
 		sketch.strokeStyle=this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
-		if(this.pre.v>this.post.v){
-			this.v=this.pre.v;
-		}
-		else{
-			this.v=this.post.v;
-		}
+		this.setUV();
 	}//end image()
 }//end Proportional
 
@@ -3183,24 +2952,7 @@ function Intersect(x, y, size, setting, pre, post, color){
 		this.pre.image();
 		this.post.x=this.pre.u+2*this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
 		sketch.arc(this.pre.u+0.75*this.hor,this.y1+0.6*this.ver,0.75*this.hor,3.14,6.29);
 		sketch.strokeStyle=this.color;
@@ -3214,17 +2966,12 @@ function Intersect(x, y, size, setting, pre, post, color){
 		sketch.strokeStyle=this.color;
 		sketch.stroke();
 		sketch.closePath();
-		this.u=this.post.u;
 		if(((this.y+1.2*this.ver)>this.pre.v)&&((this.y+1.2*this.ver)>this.post.v)){
+			this.u=this.post.u;
 			this.v=this.y+1.2*this.ver;
 		}
 		else{
-			if(this.pre.v>this.post.ver){
-				this.v=this.pre.v;
-			}
-			else{
-				this.v=this.post.v;
-			}
+			this.setUV();
 		}
 	}//end image()
 }//end Intersect
@@ -3252,24 +2999,7 @@ function Union(x, y, size, setting, pre, post, color){
 		this.pre.image();
 		this.post.x=this.pre.u+2*this.hor;
 		this.post.image();
-		if(this.pre.m>this.post.m){
-			this.m=this.pre.m;
-			this.post.y=this.post.y+(this.pre.m-this.post.m);
-			this.y1=this.y+(this.pre.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
-		else{
-			this.m=this.post.m;
-			this.pre.y=this.pre.y+(this.post.m-this.pre.m);
-			this.y1=this.y+(this.post.m-this.ver/2);
-			this.pre.clear();
-			this.post.clear();
-			this.pre.image();
-			this.post.image();
-		}
+		this.setM();
 		sketch.beginPath();
 		sketch.arc(this.pre.u+0.75*this.hor,this.y1+this.ver/2,0.75*this.hor,0,3.14);
 		sketch.strokeStyle=this.color;
@@ -3285,15 +3015,11 @@ function Union(x, y, size, setting, pre, post, color){
 		sketch.closePath();
 		this.u=this.post.u;
 		if(((this.y+1.2*this.ver)>this.pre.v)&&((this.y+1.2*this.ver)>this.post.v)){
+			this.u=this.post.u;
 			this.v=this.y+1.2*this.ver;
 		}
 		else{
-			if(this.pre.v>this.post.ver){
-				this.v=this.pre.v;
-			}
-			else{
-				this.v=this.post.v;
-			}
+			this.setUV();
 		}
 	}//end image()
 }//end Union
@@ -4559,7 +4285,8 @@ function Assumption(x, y, size, setting, color){
 		//     Other Symbols to Draw                                                        //
 		//           1.) curly d for partial derivative                                     //
 		//           2.) nabla and delta                                                    //
-		//           3.) ...                                                                //
+		//           3.) composition                                                        //
+		//           4.) ...                                                                //
 		//                                                                                  //
 		//////////////////////////////////////////////////////////////////////////////////////
 
