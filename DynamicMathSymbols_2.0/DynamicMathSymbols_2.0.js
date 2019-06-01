@@ -2,6 +2,7 @@
 
 		////////////////////////////////////////////////////////////////
 		//            Dynamic Mathematical Notation Symbols           //
+		//                           Version 2.0                      //
 		//                                                            //
 		//                          Created By:                       //
 		//                    Christopher S. Francis                  //
@@ -1446,8 +1447,8 @@ function Multiplication(x, y, size, setting, factor1, factor2, type, color){
 			}
 			else{
 				this.m = this.factor2.m;
-				this.factor1.y = this.factor1.y + (this.factor2.m - this.factor1.m);
-				this.y1 = this.y + (this.factor2.m - this.ver / 2);
+				this.factor1.y1 = this.factor1.y + (this.factor2.m - this.factor1.m);
+				this.y = this.y + (this.factor2.m - this.ver / 2);
 				this.factor1.clear();
 				this.factor2.clear();
 				this.factor1.image();
