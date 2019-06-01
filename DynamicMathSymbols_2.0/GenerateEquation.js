@@ -12,12 +12,16 @@
 		////////////////////////////////////////////////////////////////
 
 
-
-	/*
-	 * //////////  REFACTOR NOTES  ///////////////
-	 * 
-	 * move getSize into the equation objects
-	 */
+		
+			/*
+			 * Here is  a sample of this project in action. It generates 
+			 * various algebra equations with a randomly selected variable.
+			 * It returns the correct and three incorrect answers to be used
+			 * in what's basically an animated multiple choice thing. As of the
+			 * date of this git-hub commit (1 June 2019) the site this goes with
+			 * is being tested at studygames.co.nf, the guest account has "guest" for
+			 * both the username and password, if you'd like to check it out.
+			 */
 
 function pickVariable(){
 	let variable="x";
@@ -91,25 +95,6 @@ function getSize(direction, setting){
 //////////////////////////////////////////  ALGEBRA EQUATIONS  ////////////////////////////////////////
 
 
-
-	/*
-	 * //////////////  REFACTOR NOTES  /////////////////
-	 *
-	 * algebraParent(size, setting, placement, color, variable)
-	 *		-get the middle
-	 *
-	 */
-	 
-	 
-	 /*
-	  *		////////  BUG NOTES  /////////////////////
-	  *
-	  * negation objects need a type now (maybe: default is tilde)
-	  * size issue with multiplication (juxtaposition)
-	  * some things aren't clearing completely 
-	  */
-
-	  
 	  
 function AlgebraParent(size, setting, placement, color, variable){
 	this.size = size										//size of the text
